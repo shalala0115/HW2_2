@@ -1,0 +1,154 @@
+1: implement js array filter function
+
+Array.prototype.filter = function(fn){
+	var newArray = []
+	for (var i = 0; i<this.length; i++){
+		if(fn(this[i]) == true){
+			newArray.push(this[i])
+		}
+	}
+	return newArray
+};
+
+
+
+2: implement js array map function
+
+Array.prototype.map = function(fn){
+	var newArray = []
+	for (var i = 0; i<this.length; i++){
+		var x = fn(this[i]);
+		newArray.push(x)
+	}
+	return newArray
+
+};
+
+
+3: implement js array reduce function
+
+Array.prototype.reduce = function(fn){
+	var res
+	for (var i = 0; i<this.length; i++){
+		if (res !== undefined){
+			res = fn.call(undefined, res, this[i], i, this)
+		}
+		else{
+			res = this[i]
+		}
+	}
+	return res
+};
+
+
+4: implement js debounce function
+
+function debouce(fn, wait) {
+	var timer
+	return function(){
+		var context = this
+		var args = argumen
+		clearTimeout(timer)
+		timer = setTimeout(function(){fn.apply(context, args)}, wait)
+	}
+}
+
+
+5: implement js throttle function
+
+function throttle(fn, limit){
+	var last
+	var timer
+	return function(){
+		var context = this
+		var args = arguments
+		var now = + new Date()
+		if (last && now < last + limit){
+			clearTimeout(timer)
+			timer = setTimeout(function(){
+			las = now
+			fn.apply(context,args)}, limit)
+		}
+		else{
+			last = now
+			fn.apply(context, args)
+		}
+	}
+}
+
+
+6: implement js bind function
+	if (typeof this !== "function") {
+	      throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+	    }
+
+    var self = this;
+    var args = Array.prototype.slice.call(arguments, 1);
+    var fNOP = function () {};
+
+    var fbound = function () {
+        self.apply(this instanceof self ? this : context, args.concat(Array.prototype.slice.call(arguments)));
+    }
+
+    fNOP.prototype = this.prototype;
+    fbound.prototype = new fNOP();
+
+    return fbound;
+
+}
+
+
+
+7: given an array and print output data at schedule
+Let input = [{
+Value: ‘a’,
+Time: 2000
+},
+{
+Value: ‘b’,
+Time: 1000
+},
+{
+Value: ‘c’,
+Time: 3000
+},
+...
+];
+We need to output ‘a’ after 2 seconds, putput ‘b’ 1 second after ‘a’, and output ‘c’ 3
+seconds after ‘b’
+for example we start at 10:00am
+10:00:02 -> ‘a’
+10:00:03 -> ‘b’
+10:00:06 -> ‘c’
+
+function printTasks(list) {
+    function getTime() {
+        let now = new Date();
+        var h = now.getHours();
+        if (h<10){
+            h = "0" + h
+        }
+        var m = now.getMinutes();
+        if (m<10){
+            m = "0" + m
+        }
+        var s = now.getSeconds();
+        if (s<10){
+            s = "0" + s
+        }
+        console.log(h + ":" + m + ":" + s);
+    }
+    
+    var i = 0
+    
+    function print(){
+        if(!list[i]){
+            return
+        }
+        setTimeout(function(){getTime();console.log("-> "+list[i].Value); i++; print()}, list[i].Time)
+    }
+    
+    print() 
+    return
+}
+
